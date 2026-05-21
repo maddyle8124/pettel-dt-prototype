@@ -1,0 +1,741 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gói dịch vụ | PETTEL</title>
+  <link rel="stylesheet" href="styles.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🐾</text></svg>">
+  <style>
+    /* ── Page layout ── */
+    .pricing-page {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 60px 24px 100px;
+    }
+
+    /* ── Hero ── */
+    .pricing-hero {
+      text-align: center;
+      margin-bottom: 56px;
+    }
+    .pricing-hero__badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: var(--color-primary-bg);
+      color: var(--color-primary-dark);
+      font-size: 13px;
+      font-weight: 600;
+      padding: 6px 14px;
+      border-radius: var(--radius-pill);
+      margin-bottom: 18px;
+    }
+    .pricing-hero h1 {
+      font-size: 40px;
+      font-weight: 800;
+      color: var(--color-text-dark);
+      letter-spacing: -1px;
+      line-height: 1.15;
+      margin-bottom: 14px;
+    }
+    .pricing-hero h1 span {
+      color: var(--color-primary);
+    }
+    .pricing-hero p {
+      font-size: 17px;
+      color: var(--color-text-secondary);
+      max-width: 520px;
+      margin: 0 auto 28px;
+    }
+
+    /* ── Billing toggle ── */
+    .billing-toggle {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      background: var(--color-bg-gray);
+      border-radius: var(--radius-pill);
+      padding: 4px;
+    }
+    .billing-toggle__btn {
+      padding: 8px 20px;
+      border-radius: var(--radius-pill);
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--color-text-secondary);
+      transition: var(--transition);
+      cursor: pointer;
+      border: none;
+      background: none;
+    }
+    .billing-toggle__btn.active {
+      background: var(--color-bg);
+      color: var(--color-text-dark);
+      box-shadow: 0 1px 4px var(--color-shadow);
+    }
+    .billing-toggle__save {
+      background: #E8F5E9;
+      color: var(--color-green);
+      font-size: 11px;
+      font-weight: 700;
+      padding: 2px 8px;
+      border-radius: var(--radius-pill);
+      margin-left: -6px;
+    }
+
+    /* ── Plans grid ── */
+    .plans-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+      margin-bottom: 64px;
+    }
+
+    /* ── Plan card ── */
+    .plan-card {
+      border: 1.5px solid var(--color-border);
+      border-radius: var(--radius-xl);
+      padding: 32px 28px;
+      background: var(--color-bg);
+      position: relative;
+      transition: var(--transition);
+      display: flex;
+      flex-direction: column;
+    }
+    .plan-card:hover {
+      box-shadow: 0 8px 32px var(--color-shadow-hover);
+      transform: translateY(-2px);
+    }
+    .plan-card--featured {
+      border-color: var(--color-primary);
+      background: #FAFEFF;
+      box-shadow: 0 4px 24px rgba(0,188,212,0.13);
+    }
+
+    .plan-badge {
+      position: absolute;
+      top: -13px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: var(--color-primary);
+      color: #fff;
+      font-size: 12px;
+      font-weight: 700;
+      padding: 4px 16px;
+      border-radius: var(--radius-pill);
+      white-space: nowrap;
+    }
+
+    .plan-icon {
+      font-size: 32px;
+      margin-bottom: 12px;
+    }
+    .plan-name {
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--color-text-dark);
+      margin-bottom: 4px;
+    }
+    .plan-tagline {
+      font-size: 13px;
+      color: var(--color-text-secondary);
+      margin-bottom: 24px;
+    }
+
+    .plan-price {
+      margin-bottom: 24px;
+    }
+    .plan-price__amount {
+      font-size: 38px;
+      font-weight: 800;
+      color: var(--color-text-dark);
+      letter-spacing: -1px;
+      line-height: 1;
+    }
+    .plan-price__amount span {
+      font-size: 16px;
+      font-weight: 500;
+      color: var(--color-text-secondary);
+      letter-spacing: 0;
+    }
+    .plan-price__amount--free {
+      font-size: 38px;
+      font-weight: 800;
+      color: var(--color-text-dark);
+    }
+    .plan-price__billed {
+      font-size: 12px;
+      color: var(--color-text-light);
+      margin-top: 4px;
+    }
+    .plan-price__original {
+      font-size: 13px;
+      color: var(--color-text-light);
+      text-decoration: line-through;
+      margin-top: 2px;
+    }
+
+    .plan-cta {
+      width: 100%;
+      padding: 13px;
+      border-radius: var(--radius-md);
+      font-size: 15px;
+      font-weight: 700;
+      margin-bottom: 28px;
+      transition: var(--transition);
+      cursor: pointer;
+      border: none;
+    }
+    .plan-cta--outline {
+      background: transparent;
+      border: 1.5px solid var(--color-border);
+      color: var(--color-text-dark);
+    }
+    .plan-cta--outline:hover {
+      border-color: var(--color-primary);
+      color: var(--color-primary);
+    }
+    .plan-cta--primary {
+      background: var(--color-primary);
+      color: #fff;
+    }
+    .plan-cta--primary:hover {
+      background: var(--color-primary-dark);
+    }
+    .plan-cta--dark {
+      background: var(--color-text-dark);
+      color: #fff;
+    }
+    .plan-cta--dark:hover {
+      background: #333;
+    }
+
+    /* ── Feature list ── */
+    .plan-divider {
+      border: none;
+      border-top: 1px solid var(--color-border-light);
+      margin-bottom: 20px;
+    }
+    .plan-features-label {
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: var(--color-text-light);
+      margin-bottom: 14px;
+    }
+    .plan-features {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 11px;
+      flex: 1;
+    }
+    .plan-features li {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      font-size: 14px;
+      color: var(--color-text);
+      line-height: 1.4;
+    }
+    .plan-features li .check {
+      color: var(--color-primary);
+      font-size: 16px;
+      flex-shrink: 0;
+      margin-top: 0px;
+    }
+    .plan-features li .cross {
+      color: var(--color-text-light);
+      font-size: 16px;
+      flex-shrink: 0;
+    }
+    .plan-features li.muted {
+      color: var(--color-text-light);
+    }
+    .feature-tag {
+      display: inline-block;
+      background: var(--color-orange-light);
+      color: var(--color-orange);
+      font-size: 10px;
+      font-weight: 700;
+      padding: 1px 6px;
+      border-radius: 4px;
+      margin-left: 4px;
+      vertical-align: middle;
+    }
+    .feature-tag--new {
+      background: #E8F5E9;
+      color: var(--color-green);
+    }
+
+    /* ── Compare table ── */
+    .compare-section {
+      margin-bottom: 64px;
+    }
+    .compare-section h2 {
+      font-size: 24px;
+      font-weight: 700;
+      color: var(--color-text-dark);
+      margin-bottom: 24px;
+      text-align: center;
+    }
+    .compare-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 14px;
+    }
+    .compare-table thead th {
+      padding: 14px 20px;
+      text-align: left;
+      font-weight: 700;
+      color: var(--color-text-dark);
+      border-bottom: 2px solid var(--color-border);
+      background: var(--color-bg-gray);
+    }
+    .compare-table thead th:first-child {
+      border-radius: var(--radius-sm) 0 0 0;
+    }
+    .compare-table thead th:last-child {
+      border-radius: 0 var(--radius-sm) 0 0;
+    }
+    .compare-table thead th.col-featured {
+      background: var(--color-primary-bg);
+      color: var(--color-primary-dark);
+    }
+    .compare-table tbody tr {
+      border-bottom: 1px solid var(--color-border-light);
+    }
+    .compare-table tbody tr:hover {
+      background: var(--color-bg-gray);
+    }
+    .compare-table tbody tr.section-header td {
+      padding: 16px 20px 8px;
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: var(--color-text-light);
+      background: var(--color-bg);
+      border-bottom: none;
+    }
+    .compare-table tbody td {
+      padding: 13px 20px;
+      color: var(--color-text);
+      vertical-align: middle;
+    }
+    .compare-table tbody td.col-featured {
+      background: rgba(0,188,212,0.04);
+    }
+    .compare-table td .tick { color: var(--color-primary); font-size: 17px; }
+    .compare-table td .dash { color: var(--color-text-light); font-size: 17px; }
+
+    /* ── FAQ ── */
+    .faq-section h2 {
+      font-size: 24px;
+      font-weight: 700;
+      color: var(--color-text-dark);
+      text-align: center;
+      margin-bottom: 32px;
+    }
+    .faq-list {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      max-width: 720px;
+      margin: 0 auto;
+    }
+    .faq-item {
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-md);
+      overflow: hidden;
+    }
+    .faq-question {
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 18px 20px;
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--color-text-dark);
+      background: var(--color-bg);
+      cursor: pointer;
+      border: none;
+      text-align: left;
+      transition: var(--transition);
+    }
+    .faq-question:hover { background: var(--color-bg-gray); }
+    .faq-question .arrow {
+      font-size: 18px;
+      color: var(--color-text-secondary);
+      transition: transform 0.2s;
+    }
+    .faq-item.open .faq-question .arrow { transform: rotate(180deg); }
+    .faq-answer {
+      display: none;
+      padding: 0 20px 18px;
+      font-size: 14px;
+      color: var(--color-text-secondary);
+      line-height: 1.7;
+    }
+    .faq-item.open .faq-answer { display: block; }
+
+    /* ── Simple header for standalone pages ── */
+    .simple-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 16px 24px;
+      border-bottom: 1px solid var(--color-border-light);
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+    .simple-header .logo {
+      font-size: 22px;
+      font-weight: 800;
+      color: var(--color-primary);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .simple-header nav {
+      display: flex;
+      gap: 20px;
+      font-size: 14px;
+      font-weight: 500;
+    }
+    .simple-header nav a {
+      color: var(--color-text-secondary);
+      transition: var(--transition);
+    }
+    .simple-header nav a:hover { color: var(--color-primary); }
+    .simple-header nav a.active { color: var(--color-text-dark); font-weight: 600; }
+    .header-cta {
+      background: var(--color-primary);
+      color: #fff;
+      padding: 9px 20px;
+      border-radius: var(--radius-pill);
+      font-size: 14px;
+      font-weight: 600;
+      transition: var(--transition);
+    }
+    .header-cta:hover { background: var(--color-primary-dark); color:#fff; }
+  </style>
+</head>
+<body>
+
+  <!-- Header -->
+  <div class="simple-header">
+    <a href="index.html" class="logo">
+      🐾 PETTEL
+    </a>
+    <nav>
+      <a href="index.html">Tìm sitter</a>
+      <a href="pet-profile.html">Thú cưng của tôi</a>
+      <a href="pricing.html" class="active">Gói dịch vụ</a>
+    </nav>
+    <a href="index.html" class="header-cta">Bắt đầu miễn phí</a>
+  </div>
+
+  <div class="pricing-page">
+
+    <!-- Hero -->
+    <div class="pricing-hero">
+      <div class="pricing-hero__badge">🐾 Dành cho Pet Owner</div>
+      <h1>Chọn gói phù hợp<br>với <span>thú cưng của bạn</span></h1>
+      <p>Bắt đầu miễn phí, nâng cấp bất cứ lúc nào. Không có phí ẩn.</p>
+
+      <div class="billing-toggle">
+        <button class="billing-toggle__btn active" id="btn-monthly" onclick="setBilling('monthly')">Hàng tháng</button>
+        <button class="billing-toggle__btn" id="btn-yearly" onclick="setBilling('yearly')">
+          Hàng năm <span class="billing-toggle__save">Tiết kiệm 20%</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Plans -->
+    <div class="plans-grid">
+
+      <!-- Free -->
+      <div class="plan-card">
+        <div class="plan-icon">🐾</div>
+        <div class="plan-name">Miễn phí</div>
+        <div class="plan-tagline">Bắt đầu tìm người chăm thú</div>
+
+        <div class="plan-price">
+          <div class="plan-price__amount plan-price__amount--free">0₫</div>
+          <div class="plan-price__billed">Mãi mãi miễn phí</div>
+        </div>
+
+        <button class="plan-cta plan-cta--outline">Đang sử dụng</button>
+
+        <hr class="plan-divider">
+        <div class="plan-features-label">Bao gồm</div>
+        <ul class="plan-features">
+          <li><span class="check">✓</span> Tìm kiếm & xem hồ sơ sitter</li>
+          <li><span class="check">✓</span> Đặt lịch không giới hạn</li>
+          <li><span class="check">✓</span> 1 hồ sơ thú cưng (Pet ID Card)</li>
+          <li><span class="check">✓</span> Chat với sitter</li>
+          <li><span class="check">✓</span> Thanh toán giữ tạm (escrow)</li>
+          <li class="muted"><span class="cross">✕</span> Smart Match</li>
+          <li class="muted"><span class="cross">✕</span> Xem cam trực tiếp</li>
+          <li class="muted"><span class="cross">✕</span> Gọi video</li>
+          <li class="muted"><span class="cross">✕</span> Ưu tiên hỗ trợ</li>
+        </ul>
+      </div>
+
+      <!-- Premium (featured) -->
+      <div class="plan-card plan-card--featured">
+        <div class="plan-badge">⭐ Phổ biến nhất</div>
+        <div class="plan-icon">🌟</div>
+        <div class="plan-name">Premium</div>
+        <div class="plan-tagline">Dành cho pet owner bận rộn</div>
+
+        <div class="plan-price">
+          <div class="plan-price__amount" id="premium-price">149.000₫ <span>/ tháng</span></div>
+          <div class="plan-price__billed" id="premium-billed">Thanh toán hàng tháng</div>
+          <div class="plan-price__original" id="premium-original" style="display:none"></div>
+        </div>
+
+        <button class="plan-cta plan-cta--primary" onclick="showToast('Chuyển đến trang thanh toán Premium...')">Dùng thử 7 ngày miễn phí</button>
+
+        <hr class="plan-divider">
+        <div class="plan-features-label">Tất cả Free, cộng thêm</div>
+        <ul class="plan-features">
+          <li><span class="check">✓</span> Tối đa <strong>5 Pet ID Card</strong></li>
+          <li><span class="check">✓</span> <strong>Smart Match</strong> — lọc theo từng bé <span class="feature-tag feature-tag--new">Mới</span></li>
+          <li><span class="check">✓</span> <strong>Xem cam trực tiếp</strong> (Live Cam) <span class="feature-tag feature-tag--new">Mới</span></li>
+          <li><span class="check">✓</span> <strong>Gọi video</strong> với sitter <span class="feature-tag feature-tag--new">Mới</span></li>
+          <li><span class="check">✓</span> Hồ sơ sitter nâng cao (Confidence Score)</li>
+          <li><span class="check">✓</span> Lịch sử booking đầy đủ</li>
+          <li><span class="check">✓</span> Hỗ trợ ưu tiên trong 2 giờ</li>
+          <li class="muted"><span class="cross">✕</span> Badge "PETTEL Family"</li>
+        </ul>
+      </div>
+
+      <!-- Family -->
+      <div class="plan-card">
+        <div class="plan-icon">🏠</div>
+        <div class="plan-name">Family</div>
+        <div class="plan-tagline">Nhiều thú cưng, nhiều người quản lý</div>
+
+        <div class="plan-price">
+          <div class="plan-price__amount" id="family-price">299.000₫ <span>/ tháng</span></div>
+          <div class="plan-price__billed" id="family-billed">Thanh toán hàng tháng</div>
+          <div class="plan-price__original" id="family-original" style="display:none"></div>
+        </div>
+
+        <button class="plan-cta plan-cta--dark" onclick="showToast('Chuyển đến trang thanh toán Family...')">Bắt đầu ngay</button>
+
+        <hr class="plan-divider">
+        <div class="plan-features-label">Tất cả Premium, cộng thêm</div>
+        <ul class="plan-features">
+          <li><span class="check">✓</span> <strong>Không giới hạn</strong> Pet ID Card</li>
+          <li><span class="check">✓</span> Chia sẻ tài khoản <strong>2 người</strong> (ví dụ: cặp đôi)</li>
+          <li><span class="check">✓</span> Badge <strong>"PETTEL Family"</strong> trên profile</li>
+          <li><span class="check">✓</span> Báo cáo chăm sóc hàng tuần</li>
+          <li><span class="check">✓</span> Hỗ trợ khẩn cấp <strong>24/7</strong></li>
+          <li><span class="check">✓</span> Giảm <strong>5%</strong> trên mỗi booking</li>
+          <li><span class="check">✓</span> Ưu tiên đặt lịch mùa cao điểm</li>
+        </ul>
+      </div>
+
+    </div>
+
+    <!-- Compare table -->
+    <div class="compare-section">
+      <h2>So sánh chi tiết các gói</h2>
+      <table class="compare-table">
+        <thead>
+          <tr>
+            <th style="width:40%">Tính năng</th>
+            <th>Miễn phí</th>
+            <th class="col-featured">Premium</th>
+            <th>Family</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="section-header"><td colspan="4">Tìm kiếm & Đặt lịch</td></tr>
+          <tr>
+            <td>Tìm kiếm sitter</td>
+            <td><span class="tick">✓</span></td>
+            <td class="col-featured"><span class="tick">✓</span></td>
+            <td><span class="tick">✓</span></td>
+          </tr>
+          <tr>
+            <td>Số lượt booking / tháng</td>
+            <td>Không giới hạn</td>
+            <td class="col-featured">Không giới hạn</td>
+            <td>Không giới hạn</td>
+          </tr>
+          <tr>
+            <td>Thanh toán giữ tạm (Escrow)</td>
+            <td><span class="tick">✓</span></td>
+            <td class="col-featured"><span class="tick">✓</span></td>
+            <td><span class="tick">✓</span></td>
+          </tr>
+          <tr>
+            <td>Giảm giá trên mỗi booking</td>
+            <td><span class="dash">—</span></td>
+            <td class="col-featured"><span class="dash">—</span></td>
+            <td>5%</td>
+          </tr>
+          <tr>
+            <td>Ưu tiên đặt lịch mùa cao điểm</td>
+            <td><span class="dash">—</span></td>
+            <td class="col-featured"><span class="dash">—</span></td>
+            <td><span class="tick">✓</span></td>
+          </tr>
+
+          <tr class="section-header"><td colspan="4">Hồ sơ thú cưng</td></tr>
+          <tr>
+            <td>Pet ID Card</td>
+            <td>1 thẻ</td>
+            <td class="col-featured">Tối đa 5 thẻ</td>
+            <td>Không giới hạn</td>
+          </tr>
+          <tr>
+            <td>Smart Match (lọc theo từng bé)</td>
+            <td><span class="dash">—</span></td>
+            <td class="col-featured"><span class="tick">✓</span></td>
+            <td><span class="tick">✓</span></td>
+          </tr>
+
+          <tr class="section-header"><td colspan="4">Theo dõi thú cưng</td></tr>
+          <tr>
+            <td>Chat với sitter</td>
+            <td><span class="tick">✓</span></td>
+            <td class="col-featured"><span class="tick">✓</span></td>
+            <td><span class="tick">✓</span></td>
+          </tr>
+          <tr>
+            <td>Gọi video với sitter</td>
+            <td><span class="dash">—</span></td>
+            <td class="col-featured"><span class="tick">✓</span></td>
+            <td><span class="tick">✓</span></td>
+          </tr>
+          <tr>
+            <td>Xem cam trực tiếp (Live Cam)</td>
+            <td><span class="dash">—</span></td>
+            <td class="col-featured"><span class="tick">✓</span></td>
+            <td><span class="tick">✓</span></td>
+          </tr>
+          <tr>
+            <td>Báo cáo chăm sóc hàng tuần</td>
+            <td><span class="dash">—</span></td>
+            <td class="col-featured"><span class="dash">—</span></td>
+            <td><span class="tick">✓</span></td>
+          </tr>
+
+          <tr class="section-header"><td colspan="4">Hỗ trợ & Tài khoản</td></tr>
+          <tr>
+            <td>Hỗ trợ khách hàng</td>
+            <td>Email (48h)</td>
+            <td class="col-featured">Ưu tiên (2h)</td>
+            <td>Khẩn cấp 24/7</td>
+          </tr>
+          <tr>
+            <td>Chia sẻ tài khoản</td>
+            <td><span class="dash">—</span></td>
+            <td class="col-featured"><span class="dash">—</span></td>
+            <td>2 người</td>
+          </tr>
+          <tr>
+            <td>Badge "PETTEL Family"</td>
+            <td><span class="dash">—</span></td>
+            <td class="col-featured"><span class="dash">—</span></td>
+            <td><span class="tick">✓</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- FAQ -->
+    <div class="faq-section">
+      <h2>Câu hỏi thường gặp</h2>
+      <div class="faq-list">
+
+        <div class="faq-item" onclick="toggleFaq(this)">
+          <button class="faq-question">
+            Tôi có thể hủy gói bất cứ lúc nào không?
+            <span class="arrow">▾</span>
+          </button>
+          <div class="faq-answer">Có. Bạn có thể hủy gói Premium hoặc Family bất kỳ lúc nào. Gói sẽ vẫn hoạt động đến hết chu kỳ thanh toán hiện tại và sẽ không bị gia hạn tự động.</div>
+        </div>
+
+        <div class="faq-item" onclick="toggleFaq(this)">
+          <button class="faq-question">
+            7 ngày dùng thử Premium có tính phí không?
+            <span class="arrow">▾</span>
+          </button>
+          <div class="faq-answer">Hoàn toàn miễn phí. Bạn sẽ không bị tính phí trong 7 ngày đầu. Sau đó, gói Premium sẽ tự động gia hạn trừ khi bạn hủy trước.</div>
+        </div>
+
+        <div class="faq-item" onclick="toggleFaq(this)">
+          <button class="faq-question">
+            Live Cam chỉ dùng được với gói Premium?
+            <span class="arrow">▾</span>
+          </button>
+          <div class="faq-answer">Đúng. Tính năng Xem cam trực tiếp (Live Cam) và Gọi video chỉ có ở gói Premium và Family. Ngoài ra, sitter cũng cần hỗ trợ tính năng camera — điều này được hiển thị rõ trên hồ sơ của họ.</div>
+        </div>
+
+        <div class="faq-item" onclick="toggleFaq(this)">
+          <button class="faq-question">
+            Gói Family cho phép chia sẻ tài khoản như thế nào?
+            <span class="arrow">▾</span>
+          </button>
+          <div class="faq-answer">Gói Family cho phép 2 người (ví dụ: bạn và người thân) cùng quản lý các Pet ID Card, xem lịch booking và theo dõi thú cưng qua Live Cam. Cả hai đều có quyền truy cập đầy đủ.</div>
+        </div>
+
+        <div class="faq-item" onclick="toggleFaq(this)">
+          <button class="faq-question">
+            Phí booking có thay đổi theo gói không?
+            <span class="arrow">▾</span>
+          </button>
+          <div class="faq-answer">Gói Free và Premium không ảnh hưởng đến giá booking. Riêng gói Family được giảm 5% trên mỗi booking — khoản tiết kiệm này áp dụng trực tiếp tại checkout.</div>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Toast notification -->
+  <div id="toast" style="display:none; position:fixed; bottom:32px; left:50%; transform:translateX(-50%); background:#1A1A1A; color:#fff; padding:12px 24px; border-radius:var(--radius-pill); font-size:14px; font-weight:600; z-index:9999; box-shadow:0 4px 20px rgba(0,0,0,0.2);">
+    Toast message
+  </div>
+
+  <script>
+    // Billing toggle
+    const prices = {
+      monthly: { premium: '149.000₫', premiumBilled: 'Thanh toán hàng tháng', family: '299.000₫', familyBilled: 'Thanh toán hàng tháng' },
+      yearly:  { premium: '119.000₫', premiumBilled: 'Thanh toán hàng năm (1.428.000₫/năm)', family: '239.000₫', familyBilled: 'Thanh toán hàng năm (2.868.000₫/năm)' }
+    };
+    function setBilling(mode) {
+      document.getElementById('btn-monthly').classList.toggle('active', mode === 'monthly');
+      document.getElementById('btn-yearly').classList.toggle('active', mode === 'yearly');
+      const p = prices[mode];
+      document.getElementById('premium-price').innerHTML = p.premium + ' <span>/ tháng</span>';
+      document.getElementById('premium-billed').textContent = p.premiumBilled;
+      document.getElementById('family-price').innerHTML  = p.family  + ' <span>/ tháng</span>';
+      document.getElementById('family-billed').textContent  = p.familyBilled;
+    }
+
+    // FAQ accordion
+    function toggleFaq(el) {
+      el.classList.toggle('open');
+    }
+
+    // Toast
+    function showToast(msg) {
+      const t = document.getElementById('toast');
+      t.textContent = msg;
+      t.style.display = 'block';
+      setTimeout(() => { t.style.display = 'none'; }, 2500);
+    }
+  </script>
+
+</body>
+</html>
